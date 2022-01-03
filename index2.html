@@ -24,7 +24,7 @@
 <div><input type="button" id="reset" value="Reset" onclick="setBoard()"></div>
 <br>
 <div id="boardDiv"></div>
-<h1>Điền 4 ô liền nhau để thắng</h1>
+<h1>Điền 3 ô liền nhau để thắng</h1>
 <script>
 
     const MAX_COL = 20, MAX_ROW = 20;
@@ -71,7 +71,7 @@
 
     function place(caroCellId) {
         //điền ký tự vào ô được đánh dấu
-        //cellID  là id của ô được click. ví dụ 2-5. sử dụng phương thức split để được mảng [2,5]
+        //cellID  là id của ô được click.
 
         // kiểm tra xem game đã kết thúc chưa, nếu rồi, reset
         if (checkWin()) {
@@ -98,11 +98,9 @@
         let id1 = winCells[0] + '-' + winCells[1];
         let id2 = winCells[2] + '-' + winCells[3];
         let id3 = winCells[4] + '-' + winCells[5];
-        let id4 = winCells[6] + '-' + winCells[7];
         document.getElementById(id1).style.backgroundColor = 'green';
         document.getElementById(id2).style.backgroundColor = 'green';
         document.getElementById(id3).style.backgroundColor = 'green';
-        document.getElementById(id4).style.backgroundColor = 'green';
     }
 
     let winCells = [];// lưu tọa độ  [x1, y1, x2, y2, x3, y3]
