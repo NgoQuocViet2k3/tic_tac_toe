@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<h3>Caro Game Simple</h3>
+
+<input type="button" value="Change Value" onclick="changeValue()">
+<body>
+<script>
+    let a = +prompt('Nhập số ô caro');
+    let caro = new Array(a);
+    for (let i = 0; i < caro.length; i++) {
+        caro[i] = new Array(a);
+    }
+    let data = '<table>';
+    for (let i = 0; i < caro.length; i++) {
+        data = data + '<tr>';
+        for (let j = 0; j < caro[i].length; j++) {
+            caro[i][j] = '<td>' + " 0 " + '</td>';
+            data = data + caro[i][j];
+        }
+        data = data + '</tr>';
+    }
+    data = data + '</table>';
+    document.write(data)
+</script>
+</body>
+</html>

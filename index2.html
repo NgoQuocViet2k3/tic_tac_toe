@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .caroCell {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        cursor: pointer;
+        -webkit-user-select: none;
+    }
+    #reset{
+        width:100px;
+        height:50px;
+    }
+
+</style>
+</head>
+<body>
+
+<div><input type="button" id="reset" value="Reset" onclick="setBoard()"></div>
+<br>
+<div id="boardDiv"></div>
+<h1>Điền 4 ô liền nhau để thắng</h1>
+<script>
+
+    const MAX_COL = 20, MAX_ROW = 20;
+    const INIT_CHAR = '';
+    const PLAYER1_CHAR = 'O';
+    const PLAYER2_CHAR = 'X';
+    let player = 'PLAYER1';
+
+    let board = [];
+    setBoard();
+
+    function setBoard() {
+        // khởi tạo mảng board[][] và in ra màn hình
+        let tableHTML = '<table id="boardTable" class="boardTable" border="1" cellspacing="0" cellpadding="2">';
+        for (let row = 0; row < MAX_ROW; row++) {
+            board[row] = [];
+            tableHTML += '<tr>';
+            for (let col = 0; col < MAX_COL; col++) {
+                board[row][col] = INIT_CHAR;
+                //     \" để viết dấu " trong chuỗi
+                // Viết mã HTML cho từng đối tượng td:   <td onclick="place(this.id)" class="caroCell" id="R0C0"></td>
+                tableHTML += '<td onclick=\"place(this.id)\" class=\"caroCell\" id=\"' + row + '-' + col + '\">' + board[row][col] + '</td>';
+            }
+            tableHTML += '</tr>';
+        }
+        tableHTML += '</table>';
+        document.getElementById("boardDiv").innerHTML = tableHTML;
+    }
+
+    function updateBoard() {
+        // cập nhật lại mảng board[][] lên màn hình
+        let HTML = '';
+        for (let row = 0; row < MAX_ROW; row++) {
+            HTML += '<tr>';
+            for (let col = 0; col < MAX_COL; col++) {
+                //     \" để viết dấu " trong chuỗi
+                // Viết mã HTML cho từng đối tượng td:   <td onclick="place(this.id)" class="caroCell" id="0-0"></td>
+                HTML += '<td onclick=\"place(this.id)\" class=\"caroCell\" id=\"' + row + '-' + col + '\">' + board[row][col] + '</td>';
+            }
+            HTML += '</tr>';
+        }
+        document.getElementById("boardTable").innerHTML = HTML;
+    }
+
+    function place(caroCellId) {
+        //điền ký tự vào ô được đánh dấu
+        //cellID  là id của ô được click. ví dụ 2-5. sử dụng phương thức split để được mảng [2,5]
+
+        // kiểm tra xem game đã kết thúc chưa, nếu rồi, reset
+        if (checkWin()) {
+            setBoard();
+            return;
+        }``
+        let arr = caroCellId.split('-');
+        let row = arr[0];
+        let col = arr[1];
+        console.log(player);
+        let char = (player === 'PLAYER1') ? PLAYER1_CHAR : PLAYER2_CHAR;
+        player = (player === 'PLAYER1') ? 'PLAYER2' : 'PLAYER1';
+        console.log(char);
+        board[row][col] = char;
+        console.log(board);
+        updateBoard();
+        if (checkWin()) {
+            highlightWinCells();
+            // alert('Win!!!');
+        }
+    }
+
+    function highlightWinCells() {
+        let id1 = winCells[0] + '-' + winCells[1];
+        let id2 = winCells[2] + '-' + winCells[3];
+        let id3 = winCells[4] + '-' + winCells[5];
+        let id4 = winCells[6] + '-' + winCells[7];
+        document.getElementById(id1).style.backgroundColor = 'green';
+        document.getElementById(id2).style.backgroundColor = 'green';
+        document.getElementById(id3).style.backgroundColor = 'green';
+        document.getElementById(id4).style.backgroundColor = 'green';
+    }
+
+    let winCells = [];// lưu tọa độ  [x1, y1, x2, y2, x3, y3]
+    function checkWin() {
+        // trả về true hoặc false
+        // gán biến winCells thành mảng chứa tọa độ của 3 ô thắng (để đổi màu các ô này trên màn hình)
+        // 4 ô thắng là 4 ô liền nhau theo hàng dọc, ngang, chéo có giá trị giống nhau
+        let result = [];
+
+        //Kiểm tra trên hàng ngang
+        for (let row = 0; row < MAX_ROW; row++) {
+            for (let col = 0; col < MAX_COL - 3; col++) {
+                let cell1 = board[row][col];
+                if (cell1 === INIT_CHAR) {
+                    continue;
+                }
+                let cell2 = board[row][col + 1];
+                let cell3 = board[row][col + 2];
+                if (cell1 === cell2 && cell1 === cell3 ) {
+                    winCells = new Array(row, col, row, col + 1, row, col + 2);
+                    return true;
+                }
+            }
+        }
+        //Kiểm tra trên cột dọc
+        for (let row = 0; row < MAX_ROW; row++) {
+            for (let col = 0; col < MAX_COL - 3; col++) {
+                let cell1 = board[row][col];
+                if (cell1 === INIT_CHAR) {
+                    continue;
+                }
+                let cell2 = board[row+1][col];
+                let cell3 = board[row+2][col];
+                if (cell1 === cell2 && cell1 === cell3) {
+                    winCells = new Array(row, col, row+1, col, row+2, col);
+                    return true;
+                }
+            }
+        }
+
+    }
+</script>
+</body>
+</html>
